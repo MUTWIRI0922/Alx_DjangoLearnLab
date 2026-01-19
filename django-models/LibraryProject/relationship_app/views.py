@@ -16,7 +16,7 @@ def signup(request):
             return HttpResponse("Signup successful!")
     else:
         form = UserCreationForm()
-    return render(request, 'signup.html', {'form': form})
+    return render(request, 'relationship_app/register.html', {'form': form})
 
 def login(request):
     if request.method == 'POST':
