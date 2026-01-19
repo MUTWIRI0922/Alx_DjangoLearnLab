@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import DetailView
 from django.http import HttpResponse
-from .models import Author, Book, Library, Librarian
+from .models import Author, Book, Librarian
+from .models import Library
 
 # Create your views here.
 def index(request): 
