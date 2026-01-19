@@ -1,13 +1,12 @@
 from models import Author, Book, Library, Librarian
 def sample_queries():
     #  Get all books by a specific author
-    author = Author.objects.get(name="J.K. Rowling")
-    books_by_author = author.books.all()
-
+    author = Author.objects.get(name=author_name)
+    books_by_author = Book.objects.filter(author=author)
 
     # Get the librarian of a specific library
-    library = Library.objects.get(name="Central Library")
-    librarian_of_library = library.librarian
+    library = Library.objects.get(name="library_name")
+    librarian_of_library = Librarian.objects.get(library=library)
 
     # Get all books in a specific library
     
