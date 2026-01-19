@@ -11,6 +11,7 @@ def sample_queries():
     # Get all books in a specific library
     
     books_in_library = Library.objects.get(name=library_name)
+    books_in_library = books_in_library.books.all()
 
     return {
         "books_by_author": books_by_author,
