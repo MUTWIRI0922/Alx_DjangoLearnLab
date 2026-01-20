@@ -5,7 +5,7 @@ from django.dispatch import receiver
 
 # Create your models here.
 class UserProfile(models.Model):
-        ROLE_CHOICES = [
+    ROLE_CHOICES = [
         ('Admin', 'Admin'),
         ('Librarian', 'Librarian'),
         ('Member', 'Member'),

@@ -10,7 +10,7 @@ from django.contrib.auth.forms import UserCreationForm
 # Create your views here.
 def Admin(request):
     def is_admin(user):
-    return hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
+        return hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
 
     @user_passes_test(is_admin)
     def admin_dashboard(request):
@@ -18,11 +18,22 @@ def Admin(request):
 
 
 def Librarian(request):
-    return HttpResponse("Librarian View")
+    def is_librarian(user):
+        return hasattr(user, 'userprofile') and user.userprofile.role == 'Librarian'
+
+    @user_passes_test(is_librarian)
+    def librarian_dashboard(request):
+        return render(request, 'librarian_view.html')
 
 def Member(request):
-    return HttpResponse("Member View")
-@permission_required('relationship_app.can_add_book')
+    def is_member(user):
+        return hasattr(user, 'userprofile') and user.userprofile.role == 'Member'
+
+    @user_passes_test(is_member)
+    def member_dashboard(request):
+        return render(request, 'member_view.html')
+
+@permission_required('relationship_app.can_add_book', raise_exception=True)
 def add_book(request):
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -37,7 +48,7 @@ def add_book(request):
         return redirect('book_list')
 
     return render(request, 'add_book.html')
-@permission_required(relationship_app.can_change_book)
+@permission_required('relationship_app.can_change_book', raise_exception=True)
 def change_book(request, book_id):
     book = Book.objects.get(id=book_id)
     if request.method == 'POST':
@@ -49,7 +60,7 @@ def change_book(request, book_id):
 
     return render(request, 'change_book.html', {'book': book})
 
-@permission_required('relationship_app.can_delete_book')
+@permission_required('relationship_app.can_delete_book', raise_exception=True)
 def delete_book(request, book_id):
     book = Book.objects.get(id=book_id)
     book.delete()
