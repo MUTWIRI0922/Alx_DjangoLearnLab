@@ -31,9 +31,9 @@ urlpatterns = [
     path('admin-dashboard/', admin_dashboard, name='admin_dashboard'),
     path('librarian-dashboard/', librarian_dashboard, name='librarian_dashboard'),
     path('member-dashboard/', member_dashboard, name='member_dashboard'),
-    path('book/change/<int:book_id>/', views.change_book, name='change_book'),
+    path('edit_book/<int:book_id>/', views.change_book, name='change_book'),
     path('book/delete/<int:book_id>/', views.delete_book, name='delete_book'),
-    path('book/add/', views.add_book, name='add_book'),
+    path('add_book/', views.add_book, name='add_book'),
 
     
 ]
