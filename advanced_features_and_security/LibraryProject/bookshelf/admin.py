@@ -13,6 +13,7 @@ class CustomUserAdmin(admin.ModelAdmin):
     search_fields = ('username', 'email')
     list_filter = ('is_staff', 'is_active')
 
-admin.site.register(CustomUser, CustomUserManager)
+admin.site.register(CustomUser, CustomUserAdmin)
+
 
 # Register your models here.
