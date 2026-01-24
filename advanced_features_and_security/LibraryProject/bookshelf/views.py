@@ -4,6 +4,10 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from .forms import UserCreationForm, UserChangeForm
 # Create your views here.
+def book_list(request):
+    books = Book.objects.all()
+    return render(request, 'bookshelf/book_list.html', {'books': books})
+    
 @permission_required('bookshelf.can_view', raise_exception=True)
 def view_users(request):
     users = User.objects.all()
