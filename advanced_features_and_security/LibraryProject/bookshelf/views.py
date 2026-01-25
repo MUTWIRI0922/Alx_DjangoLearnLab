@@ -5,6 +5,8 @@ from django.shortcuts import redirect
 from .forms import UserCreationForm, UserChangeForm
 from .models import Book
 from django.db.models import Q
+from .forms import ExampleForm
+
 # Create your views here.
 
 def book_list(request):
