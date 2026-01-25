@@ -3,11 +3,25 @@ from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from .forms import UserCreationForm, UserChangeForm
+from .models import Book
+from django.db.models import Q
 # Create your views here.
+
 def book_list(request):
-    books = Book.objects.all()
+    query = request.GET.get('q')
+
+    if query:
+        # Safe ORM filtering (prevents SQL injection)
+        books = Book.objects.filter(
+            Q(title__icontains=query) |
+            Q(author__icontains=query)
+        )
+    else:
+        books = Book.objects.all()
+
     return render(request, 'bookshelf/book_list.html', {'books': books})
-    
+
+
 @permission_required('bookshelf.can_view', raise_exception=True)
 def view_users(request):
     users = User.objects.all()
@@ -18,6 +32,7 @@ def add_user(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
+
             form.save()
             return redirect('view_users')
     else:
