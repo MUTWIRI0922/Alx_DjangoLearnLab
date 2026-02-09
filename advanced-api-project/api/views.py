@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import serializers, permissions
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, filters
 from datetime import date
@@ -12,7 +12,7 @@ from .serializers import BookSerializer
 
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = BookSerializer
     # Enable filtering, searching, and ordering
     filter_backends = [
@@ -44,7 +44,7 @@ class BookListView(generics.ListAPIView):
     ordering = ['title']
 
 class BookDetailView(generics.RetrieveAPIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     queryset = Book.objects.all()
     serializer_class = BookSerializer
