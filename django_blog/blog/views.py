@@ -155,7 +155,7 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         comment = self.get_object()
         return self.request.user == comment.author
 
-def posts_by_tag(request, tag_name):
+def PostsByTagListView(request, tag_name):
     posts = Post.objects.filter(tags__name=tag_name)
     return render(request, 'blog/tag_posts.html', {
         'posts': posts,
