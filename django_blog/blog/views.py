@@ -107,8 +107,17 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return self.request.user == post.author
 
 @login_required
-def CommentCreateView(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
+class CommentCreateView(CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/comment_form.html'
+
+    def form_valid(self, form):
+        post_id = self.kwargs['post_id']
+        post = get_object_or_404(Post, id=post_id)
+        form.instance.post = post
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
     if request.method == 'POST':
         form = CommentForm(request.POST)
