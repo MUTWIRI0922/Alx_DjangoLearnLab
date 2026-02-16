@@ -37,6 +37,13 @@
 {% else %}
     <p>You must be logged in to comment.</p>
 {% endif %}
+<p><strong>Tags:</strong>
+{% for tag in object.tags.all %}
+    <a href="{% url 'tag-posts' tag.name %}">{{ tag.name }}</a>
+{% empty %}
+    No tags
+{% endfor %}
+</p>
 
 <a href="{% url 'post-list' %}">Back to Posts</a>
 

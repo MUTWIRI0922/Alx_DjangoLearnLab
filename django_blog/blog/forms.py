@@ -20,9 +20,29 @@ class UserUpdateForm(forms.ModelForm):
         fields = ['username', 'email']
 
 class PostForm(forms.ModelForm):
+    tags = forms.CharField(required=False, help_text="Enter tags separated by commas")
+
     class Meta:
         model = Post
-        fields = ['title', 'content']
+        fields = ['title', 'content', 'tags']
+
+    def save(self, commit=True, user=None):
+        post = super().save(commit=False)
+
+        if user:
+            post.author = user
+
+        if commit:
+            post.save()
+
+            tag_names = self.cleaned_data['tags'].split(',')
+            for tag_name in tag_names:
+                tag_name = tag_name.strip()
+                if tag_name:
+                    tag, created = Tag.objects.get_or_create(name=tag_name)
+                    post.tags.add(tag)
+
+        return post
 
 class CommentForm(forms.ModelForm):
     class Meta:
