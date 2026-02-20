@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, get_user_model
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import status, generics
+from rest_framework import status, generics, permissions
 from .serializers import RegisterSerializer, LoginSerializer
 from rest_framework.permissions import AllowAny
 
@@ -71,9 +71,9 @@ class ProfileView(generics.RetrieveUpdateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def follow_user(request, user_id):
-    user_to_follow = get_object_or_404(User, id=user_id)
+@permission_classes([permissions.IsAuthenticated])
+def followuser(request, user_id):
+    user_to_follow = get_object_or_404(CustomUser.objects.all(), id=user_id)
 
     if request.user == user_to_follow:
         return Response({"error": "You cannot follow yourself"}, status=400)
@@ -84,9 +84,9 @@ def follow_user(request, user_id):
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def unfollow_user(request, user_id):
-    user_to_unfollow = get_object_or_404(User, id=user_id)
+@permission_classes([permissions.IsAuthenticated])
+def unfollowuser(request, user_id):
+    user_to_unfollow = get_object_or_404(CustomUser.objects.all(), id=user_id)
 
     request.user.following.remove(user_to_unfollow)
 
