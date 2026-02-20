@@ -23,7 +23,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'])
     def like(self, request, pk=None):
-        post = self.get_object()
+        post = generics.get_object_or_404(Post, pk=pk)
 
         if Like.objects.all().filter(user=request.user, post=post).exists():
             return Response(
@@ -31,7 +31,7 @@ class PostViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        Like.objects.create(user=request.user, post=post)
+        Like.objects.get_or_create(user=request.user, post=post)
 
         # Create notification
         if post.author != request.user:
